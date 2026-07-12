@@ -1,0 +1,17 @@
+data:
+  sequence_length: 19
+  max_genotypes: 10
+  split_by: target_locus
+model:
+  d_model: 128
+  nhead: 4
+  sequence_layers: 2
+  genotype_layers: 2
+  dropout: 0.1
+training:
+  epochs: 50
+  batch_size: 32
+  learning_rate: 0.0001
+  weight_decay: 0.0001
+  seed: 42
+

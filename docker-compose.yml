@@ -1,0 +1,9 @@
+services:
+  hbv-sirna:
+    build: .
+    volumes:
+      - ./data:/app/data
+      - ./checkpoints:/app/checkpoints
+      - ./results:/app/results
+    command: ["--help"]
+
