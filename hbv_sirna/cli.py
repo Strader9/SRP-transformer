@@ -17,6 +17,7 @@ def parser() -> argparse.ArgumentParser:
     prepare.add_argument("--output", required=True)
     prepare.add_argument("--window", type=int, default=19)
     prepare.add_argument("--stride", type=int, default=1)
+    prepare.add_argument("--annotation", default=None, help="BED file of HBV functional regions (enables 7-dim hbv_features)")
     train = commands.add_parser("train", help="Train the HBV multi-genotype model")
     train.add_argument("--data", required=True)
     train.add_argument("--output-dir", default="checkpoints")
@@ -24,6 +25,7 @@ def parser() -> argparse.ArgumentParser:
     train.add_argument("--batch-size", type=int, default=32)
     train.add_argument("--learning-rate", type=float, default=1e-4)
     train.add_argument("--seed", type=int, default=42)
+    train.add_argument("--split-by", choices=["locus", "random"], default="locus", help="Split strategy: locus groups by target site (anti-leakage), random shuffles rows")
     infer = commands.add_parser("predict", help="Rank candidate siRNAs")
     infer.add_argument("--data", required=True)
     infer.add_argument("--checkpoint", required=True)
@@ -34,10 +36,10 @@ def parser() -> argparse.ArgumentParser:
 def main() -> None:
     args = parser().parse_args()
     if args.command == "prepare":
-        frame = build_candidate_table(args.alignment, args.output, args.reference_id, args.window, args.stride)
+        frame = build_candidate_table(args.alignment, args.output, args.reference_id, args.window, args.stride, args.annotation)
         print(f"wrote {len(frame)} candidates to {args.output}")
     elif args.command == "train":
-        metrics = train_model(args.data, args.output_dir, args.epochs, args.batch_size, args.learning_rate, args.seed)
+        metrics = train_model(args.data, args.output_dir, args.epochs, args.batch_size, args.learning_rate, args.seed, args.split_by)
         print(json.dumps(metrics, indent=2))
     elif args.command == "predict":
         frame = predict(args.data, args.checkpoint, args.output)

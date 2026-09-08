@@ -13,9 +13,18 @@ class SequenceEncoder(nn.Module):
 
     def forward(self, tokens: torch.Tensor) -> torch.Tensor:
         padding = tokens.eq(6)
-        encoded = self.encoder(self.embedding(tokens), src_key_padding_mask=padding)
+        all_padding = padding.all(dim=-1)
+        # Fully-padded rows (e.g. unused genotype slots) would make self-attention
+        # softmax over all -inf -> NaN.  Give them one valid token so the encoder
+        # runs normally; their pooled output is zeroed by the original padding mask.
+        safe_tokens = tokens.clone()
+        safe_tokens[all_padding, 0] = 0  # 'A' token id
+        safe_padding = safe_tokens.eq(6)
+        encoded = self.encoder(self.embedding(safe_tokens), src_key_padding_mask=safe_padding)
         valid = (~padding).unsqueeze(-1)
-        return (encoded * valid).sum(dim=-2) / valid.sum(dim=-2).clamp_min(1)
+        pooled = (encoded * valid).sum(dim=-2) / valid.sum(dim=-2).clamp_min(1)
+        pooled[all_padding] = 0.0
+        return pooled
 
 
 class HBVMultiGenotypeModel(nn.Module):

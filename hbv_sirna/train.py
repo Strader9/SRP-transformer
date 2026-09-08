@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import random
+import re
 from pathlib import Path
 
 import numpy as np
@@ -21,6 +22,48 @@ def set_seed(seed: int) -> None:
         torch.cuda.manual_seed_all(seed)
 
 
+def _locus_group(sample_id: str) -> str:
+    """Extract a target-locus key from ``sample_id`` like ``ref:100-118``.
+
+    The start position defines the locus (two candidates with the same start
+    share the target site and must not be split across train/validation).
+    Falls back to the full sample_id when the pattern is not present.
+    """
+    m = re.search(r":(\d+)-(\d+)", sample_id)
+    return m.group(1) if m else sample_id
+
+
+def _split_indices(
+    dataset: HBVMultiGenotypeDataset,
+    seed: int,
+    split_by: str = "locus",
+    val_ratio: float = 0.2,
+) -> tuple[list[int], list[int]]:
+    """Return (train_indices, valid_indices).
+
+    ``locus`` mode groups samples by target site so the same locus never appears
+    in both splits.  ``random`` mode is a plain row-wise shuffle (not recommended
+    for siRNA data because of target-site leakage).
+    """
+    rng = np.random.default_rng(seed)
+    n = len(dataset)
+    if split_by == "random":
+        indices = rng.permutation(n)
+        cut = max(1, int(n * (1 - val_ratio)))
+        return indices[:cut].tolist(), indices[cut:].tolist()
+
+    groups = [_locus_group(s.sample_id) for s in dataset.samples]
+    unique_groups = list(dict.fromkeys(groups))
+    rng.shuffle(unique_groups)
+    n_train_groups = max(1, int(len(unique_groups) * (1 - val_ratio)))
+    train_groups = set(unique_groups[:n_train_groups])
+    train_idx = [i for i, g in enumerate(groups) if g in train_groups]
+    valid_idx = [i for i, g in enumerate(groups) if g not in train_groups]
+    if not valid_idx:
+        valid_idx = [train_idx.pop()]
+    return train_idx, valid_idx
+
+
 def train_model(
     data_csv: str,
     output_dir: str,
@@ -28,6 +71,7 @@ def train_model(
     batch_size: int = 32,
     learning_rate: float = 1e-4,
     seed: int = 42,
+    split_by: str = "locus",
     device: str | None = None,
 ) -> dict[str, float]:
     set_seed(seed)
@@ -36,10 +80,9 @@ def train_model(
         raise ValueError("At least five labelled samples are required")
     if any(sample.label is None for sample in dataset.samples):
         raise ValueError("Training CSV contains samples without label")
-    indices = np.random.default_rng(seed).permutation(len(dataset))
-    split = max(1, int(len(indices) * 0.8))
-    train_loader = DataLoader(Subset(dataset, indices[:split]), batch_size=batch_size, shuffle=True)
-    valid_loader = DataLoader(Subset(dataset, indices[split:]), batch_size=batch_size)
+    train_idx, valid_idx = _split_indices(dataset, seed, split_by)
+    train_loader = DataLoader(Subset(dataset, train_idx), batch_size=batch_size, shuffle=True)
+    valid_loader = DataLoader(Subset(dataset, valid_idx), batch_size=batch_size)
     target_device = torch.device(device or ("cuda" if torch.cuda.is_available() else "cpu"))
     model = HBVMultiGenotypeModel(hbv_feature_dim=dataset.feature_dim).to(target_device)
     optimizer = torch.optim.AdamW(model.parameters(), lr=learning_rate, weight_decay=1e-4)
@@ -70,5 +113,4 @@ def train_model(
             best = record["valid_mse"]
             torch.save({"state_dict": model.state_dict(), "feature_dim": dataset.feature_dim}, out / "best.pt")
     (out / "history.json").write_text(json.dumps(history, indent=2), encoding="utf-8")
-    return {"best_valid_mse": best}
-
+    return {"best_valid_mse": best, "n_train": len(train_idx), "n_valid": len(valid_idx), "split_by": split_by}

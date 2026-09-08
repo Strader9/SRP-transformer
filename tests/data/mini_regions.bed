@@ -1,0 +1,6 @@
+# Test BED for mini_msa.fasta (ref_A coordinates, 0-based half-open)
+# S and P overlap at 15-20; P and C overlap at 40-45; C and X overlap at 55-60
+ref	0	20	S
+ref	15	45	P
+ref	40	60	C
+ref	55	60	X

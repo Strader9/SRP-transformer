@@ -1,0 +1,2 @@
+experiment_id,sirna,target_sequence,reference_accession,genotype,label,assay_type,dose_nm,time_h,cell_line,source
+EXAMPLE_001,AACGUUCGCUAAGCGCUAA,TTAGCGCTTAGCGAACGTT,NC_003977.2,D,0.75,HBsAg,50,72,HepG2.2.15,10.1000/example

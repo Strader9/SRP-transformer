@@ -6,6 +6,8 @@ data/raw/*
 data/processed/*
 !data/raw/.gitkeep
 !data/processed/.gitkeep
+!data/raw/hbv_experiments_template.csv
+!data/raw/hbv_regions_example.bed
 checkpoints/*
 !checkpoints/.gitkeep
 results/*

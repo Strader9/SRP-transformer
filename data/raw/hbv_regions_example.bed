@@ -1,0 +1,11 @@
+# EXAMPLE BED — HBV genotype D (NC_003977.2, 3182 bp) functional regions.
+# Coordinates are 0-based half-open on the gap-free reference.
+# WARNING: these coordinates are approximate and MUST be verified against your
+# actual reference sequence before use. HBV is circular; wrap-around ORFs (P, S)
+# are split into two records.
+chrHBV	2306	3182	P
+chrHBV	0	1623	P
+chrHBV	1813	2452	C
+chrHBV	2847	3182	S
+chrHBV	0	835	S
+chrHBV	1373	1838	X
