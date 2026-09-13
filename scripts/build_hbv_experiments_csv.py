@@ -140,6 +140,46 @@ add(experiment_id="Wang2010_S4", sirna="", target_sequence="GGTATGTTGCCCGTTTGTCC
     reference_accession=REF_D_AYW, genotype="D", label=0.8469, assay_type="HBsAg_mRNA",
     cell_line="HepG2.2.15", source="PMC2778861;Wang2010;siRNA-S4;HBsAg_pos458;80nM_72h;mRNA")
 
+# Huang et al. 2026 — Nature Communications (DOI:10.1038/s41467-025-66876-5)
+# 26 chemically-modified siRNAs (A1-A26) targeting HBV genotype D, HepG2.2.15
+# Label = mean HBsAg inhibition (fraction) at 0.28 nM, Day 6, 3 biological reps
+# Data from official Source Data 1 (Supplementary Fig. 1a); precise 4-decimal values
+# Sequences converted from RNA (U) to DNA (T); some overlap with Zhang2010 target sites
+# Negative values (A1, A12) = no significant inhibition / experimental noise, kept as-is
+_HUANG2026_A = [
+    ("A1",  "TCGTGTTACAGGCGGGGTTTT", -0.053),
+    ("A10", "TGGTGGACTTCTCTCAATTTT", 0.7706),
+    ("A11", "GTGGACTTCTCTCAATTTTCT", 0.9754),
+    ("A12", "GTGTCTGCGGCGTTTTATCAT", -0.0916),
+    ("A13", "TCCTGCTGCTATGCCTCATCT", 0.5087),
+    ("A14", "TGCTGCTATGCCTCATCTTCT", 0.9422),
+    ("A15", "ATGTTGCCCGTTTGTCCTCTA", 0.5083),
+    ("A16", "CTGCTCAAGGAACCTCTATGT", 0.4946),
+    ("A17", "TAGGGCTTTCCCCCACTGTTT", 0.4122),
+    ("A18", "CAGTTATATGGATGATGTGGT", 0.7619),
+    ("A19", "CTGCCGATCCATACTGCGGAA", 0.9502),
+    ("A2",  "TACAGGCGGGGTTTTTCTTGT", 0.8973),
+    ("A20", "ATCCATACTGCGGAACTCCTA", 0.5982),
+    ("A21", "ACCACGGGGCGCACCTCTCTT", 0.2853),
+    ("A22", "CACGGGGCGCACCTCTCTTTA", 0.1893),
+    ("A23", "CTCCCCGTCTGTGCCTTCTCA", 0.9199),
+    ("A24", "TCCCCGTCTGTGCCTTCTCAT", 0.9474),
+    ("A25", "CCCGTCTGTGCCTTCTCATCT", 0.9638),
+    ("A26", "CGGACCGTGTGCACTTCGCTT", 0.9402),
+    ("A3",  "AGGCGGGGTTTTTCTTGTTGA", 0.9415),
+    ("A4",  "GCGGGGTTTTTCTTGTTGACA", 0.9205),
+    ("A5",  "CGGGGTTTTTCTTGTTGACAA", 0.988),
+    ("A6",  "GTCTAGACTCGTGGTGGACTT", 0.7284),
+    ("A7",  "CTCGTGGTGGACTTCTCTCAA", 0.7623),
+    ("A8",  "TCGTGGTGGACTTCTCTCAAT", 0.7175),
+    ("A9",  "GTGGTGGACTTCTCTCAATTT", 0.7141),
+]
+for _id, _seq, _lbl in _HUANG2026_A:
+    add(experiment_id=f"Huang2026_{_id}", sirna="", target_sequence=_seq,
+        reference_accession=REF_D_AYW, genotype="D", label=_lbl, assay_type="HBsAg",
+        cell_line="HepG2.2.15",
+        source=f"NatCommun2026;Huang2026;{_id};0.28nM_Day6;3reps_mean;chem_modified;SourceData1")
+
 # Group II: conservation-based miRNA, liposome
 # Gao et al. [52]
 add(experiment_id="Gao2008_miR155_S608", sirna="", target_sequence="CCAAGTCTGTACAGCATCGTGA",
