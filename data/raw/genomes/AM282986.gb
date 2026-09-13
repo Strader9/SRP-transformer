@@ -1,0 +1,382 @@
+LOCUS       AM282986                3221 bp    DNA     circular VRL 27-APR-2010
+DEFINITION  Hepatitis B virus (SUBTYPE ADW2), genotype A, complete genome.
+ACCESSION   AM282986
+VERSION     AM282986.1
+KEYWORDS    complete genome.
+SOURCE      Hepatitis B virus subtype adw2
+  ORGANISM  Hepatitis B virus subtype adw2
+            Viruses; Riboviria; Pararnavirae; Artverviricota; Revtraviricetes;
+            Blubervirales; Hepadnaviridae; Orthohepadnavirus; Orthohepadnavirus
+            hominoidei.
+REFERENCE   1
+  AUTHORS   Panjaworayan,N., Roessner,S.K., Firth,A.E. and Brown,C.M.
+  TITLE     HBVRegDB: annotation, comparison, detection and visualization of
+            regulatory elements in hepatitis B virus sequences
+  JOURNAL   Virol. J. 4, 136 (2007)
+   PUBMED   18086305
+REFERENCE   2  (bases 1 to 3221)
+  AUTHORS   Panjaworayan,N., Chien,A. and Brown,C.M.
+  TITLE     Direct Submission
+  JOURNAL   Submitted (16-JUN-2006) Panjaworayan N., Biochemistry, University
+            of Otago, 710 Cumberland St. Dunedin, 9001, NEW ZEALAND
+FEATURES             Location/Qualifiers
+     source          1..3221
+                     /organism="Hepatitis B virus subtype adw2"
+                     /mol_type="genomic DNA"
+                     /serotype="adw2"
+                     /db_xref="taxon:10408"
+                     /note="genotype A"
+     gene            order(2307..3221,1..1623)
+                     /gene="P protein"
+     CDS             join(2307..3221,1..1623)
+                     /gene="P protein"
+                     /codon_start=1
+                     /product="Polymerase"
+                     /protein_id="CAK55121.1"
+                     /db_xref="GOA:Q17UT1"
+                     /db_xref="InterPro:IPR000201"
+                     /db_xref="InterPro:IPR000477"
+                     /db_xref="InterPro:IPR001462"
+                     /db_xref="UniProtKB/TrEMBL:Q17UT1"
+                     /translation="MPLSYQHFRKLLLLDDGTEAGPLEEELPRLADADLNRRVAEDLN
+                     LGNLNVSIPWTHKVGNFTGLYSSTVPIFNPEWQTPSFPKIHLQEDIINRCQQFVGPLT
+                     VNEKRRLKLIMPARFYPTHTKYLPLDKGIKPYYPDQVVNHYFKTRHYLHTLWKAGILY
+                     KRETTRSASFCGSPYSWEQELQHGRLVIETSQRHGDESFCSQPSGILSRSSVGPCIRS
+                     QLKQSRLGLQPHQGPLASSQPGRSGSIRARVHPSTRRCFGVEPSGSGHIDHSVNNSSS
+                     CLHQSAVRKAAYSHLSTSKRQSSSGHAVEFHCLPPSSAGSQSQGSVFSCWWLQFRNSK
+                     PCSEYCLSHLVNLREDWGPCDEYGEHHIRIPRTPARVTGGVFLVDKNPHNTAESRLVV
+                     DFSQFSRGITRVSWPKFAVPNLQSLTNLLSSNLSWLSLDVSAAFYHIPLHPAAMPHLL
+                     VGSSGLSRYVARLSSNSRNNNNQYGTMQNLHDSCSRQLYVSLMLLYKTFGWKLHLYSH
+                     PIVLGFRKIPMGVGLSPFLLAQFTSAICSVVRRAFPHCLAFSYMDDVVLGAKSVQHRE
+                     SLYTAVTNFLLSLGIHLNPNKTKRWGYSLNFMGYIIGSWGTLPQDHIVQKIKHCFRKL
+                     PVNRPIDWKVCQRIVGLLGFAAPFTQCGYPALMPLYACIQAKQAFTFSPTYKAFLSKQ
+                     YMNLYPVARQRPGLCQVFADATPTGWGLAIGHQRMRGTFVAPLPIHTAELLAACFARS
+                     RSGAKLIGTDNSVVLSRKYTSFPWLLGCTANWILRGTSFVYVPSALNPADDPSRGRLG
+                     LSRPLLRLPFQPTTGRTSLYAVSPSVPSHLPVRVHFASPLHVAWRPP"
+     gene            order(2835..3221,2854..3221,1..835,1..1930,2716..2834)
+                     /gene="S1"
+     mRNA            join(2835..3221,1..1930)
+                     /gene="S1"
+                     /product="Large S mRNA"
+     CDS             join(2854..3221,1..835)
+                     /gene="S1"
+                     /codon_start=1
+                     /product="large surface protein"
+                     /protein_id="CAK55122.1"
+                     /db_xref="GOA:Q17UT0"
+                     /db_xref="InterPro:IPR000349"
+                     /db_xref="UniProtKB/TrEMBL:Q17UT0"
+                     /translation="MGGWSSKPRKGMGTNLSVPNPLGFFPDHQLDPAFGANSNNPDWD
+                     FNPIKDHWPAANQVGVGAFGPGFTPPHGGVLGWSPQAQGILTTVSTIPPPASTNRQSG
+                     RQPTPISPPLRDSHPQAMQWNSTAFHQALQDPKVRGLYFPAGGSSSGTVNPAPNIASH
+                     ISSISARTGDPVTNMENITSGFLGPLLVLQAGFFLLTRILTIPQSLDSWWTSLNFLGG
+                     SPVCLGQNSQSPTSNHSPTSCPPICPGYRWMCLRRFIIFLFILLLCLIFLLVLLDYQG
+                     MLPVCPLIPGTTTTSTGPCKTCTTPAQGNSMFPSCCCTKPSDGNCTCIPIPSSWAFAK
+                     YLWEWASVRFSWLSLLVPFVQWFVGLSPTVWLSAIWMMWYWGPSLYSIVSPFIPLLPI
+                     FFCLWVYI"
+     mRNA            join(3185..3221,1..1930)
+                     /gene="S2"
+                     /product="middle S mRNA"
+     CDS             join(3211..3221,1..835)
+                     /gene="S2"
+                     /codon_start=1
+                     /product="middle surface protein"
+                     /protein_id="CAK55123.1"
+                     /db_xref="GOA:Q17US9"
+                     /db_xref="InterPro:IPR000349"
+                     /db_xref="UniProtKB/TrEMBL:Q17US9"
+                     /translation="MQWNSTAFHQALQDPKVRGLYFPAGGSSSGTVNPAPNIASHISS
+                     ISARTGDPVTNMENITSGFLGPLLVLQAGFFLLTRILTIPQSLDSWWTSLNFLGGSPV
+                     CLGQNSQSPTSNHSPTSCPPICPGYRWMCLRRFIIFLFILLLCLIFLLVLLDYQGMLP
+                     VCPLIPGTTTTSTGPCKTCTTPAQGNSMFPSCCCTKPSDGNCTCIPIPSSWAFAKYLW
+                     EWASVRFSWLSLLVPFVQWFVGLSPTVWLSAIWMMWYWGPSLYSIVSPFIPLLPIFFC
+                     LWVYI"
+     gene            order(1..3221,1626..1817,1901..2458)
+                     /gene="C"
+     gene            order(1..3221,1814..2458)
+                     /gene="pre C/C"
+     gene            155..835
+                     /gene="S"
+     CDS             155..835
+                     /gene="S"
+                     /codon_start=1
+                     /product="Small S protein/ HbsAg"
+                     /protein_id="CAK55116.1"
+                     /db_xref="GOA:Q17UT6"
+                     /db_xref="InterPro:IPR000349"
+                     /db_xref="UniProtKB/TrEMBL:Q17UT6"
+                     /translation="MENITSGFLGPLLVLQAGFFLLTRILTIPQSLDSWWTSLNFLGG
+                     SPVCLGQNSQSPTSNHSPTSCPPICPGYRWMCLRRFIIFLFILLLCLIFLLVLLDYQG
+                     MLPVCPLIPGTTTTSTGPCKTCTTPAQGNSMFPSCCCTKPSDGNCTCIPIPSSWAFAK
+                     YLWEWASVRFSWLSLLVPFVQWFVGLSPTVWLSAIWMMWYWGPSLYSIVSPFIPLLPI
+                     FFCLWVYI"
+     regulatory      900..1310
+                     /regulatory_class="enhancer"
+                     /gene="S2"
+                     /note="Enhancer 1"
+                     /bound_moiety="AP1"
+                     /bound_moiety="C/ERBP"
+                     /bound_moiety="COUPTF"
+                     /bound_moiety="CREAB,ATF2"
+                     /bound_moiety="HNF3"
+                     /bound_moiety="HNF4"
+                     /bound_moiety="IFN alpha"
+                     /bound_moiety="IRF1"
+                     /bound_moiety="p53,NF1"
+                     /bound_moiety="RFX1"
+                     /bound_moiety="RXR:PPAR"
+     gene            950..1930
+                     /gene="X"
+     regulatory      950..1310
+                     /regulatory_class="promoter"
+                     /gene="X"
+                     /note="DNA X promoter"
+     protein_bind    1026..1035
+                     /gene="X"
+                     /inference="similar to DNA sequence:INSDC:V01460"
+                     /bound_moiety="C/EBP"
+     protein_bind    1081..1087
+                     /gene="X"
+                     /inference="similar to DNA sequence:INSDC:V01460"
+                     /bound_moiety="p53"
+     protein_bind    1088..1098
+                     /gene="X"
+                     /inference="similar to DNA sequence:INSDC:V01460"
+                     /bound_moiety="IRF alpha"
+     protein_bind    1121..1130
+                     /gene="X"
+                     /inference="similar to DNA sequence:INSDC:V01460"
+                     /bound_moiety="HNF3"
+     protein_bind    1136..1148
+                     /gene="X"
+                     /inference="similar to DNA sequence:INSDC:V01460"
+                     /bound_moiety="HNF4, RXR:PPAR, COUP1"
+     protein_bind    1150..1162
+                     /gene="X"
+                     /inference="similar to DNA sequence:INSDC:V01460"
+                     /bound_moiety="RFX1"
+     misc_RNA        1151..1684
+                     /gene="X"
+                     /product="RNA PRE"
+                     /note="HBV post transcriptional regulatory element (a)
+                     (HBVPRE)"
+     protein_bind    1188..1196
+                     /gene="X"
+                     /inference="similar to DNA sequence:INSDC:V01460"
+                     /bound_moiety="AP1, CREAB, ATF2"
+     protein_bind    1220..1235
+                     /gene="X"
+                     /inference="similar to DNA sequence:INSDC:V01460"
+                     /bound_moiety="NF1"
+     misc_RNA        1252..1582
+                     /gene="X"
+                     /product="RNA SRE 1-3"
+                     /note="splicing regulatory element (SRE) 1-3"
+     misc_RNA        1254..1582
+                     /gene="X"
+                     /product="RNA PRE (b)"
+                     /note="post transcriptional regulatory element (b)"
+     protein_bind    1275..1291
+                     /gene="X"
+                     /note="RNA protein binding site La protein"
+                     /bound_moiety="La protein"
+     misc_RNA        1292..1321
+                     /gene="X"
+                     /product="PRE HSL alpha structure"
+     mRNA            1310..1930
+                     /gene="X"
+                     /product="X mRNA"
+     misc_feature    1310
+                     /gene="X"
+                     /note="X transcript start"
+     CDS             1374..1838
+                     /gene="X"
+                     /codon_start=1
+                     /product="X protein"
+                     /protein_id="CAK55117.1"
+                     /db_xref="GOA:Q17UT5"
+                     /db_xref="InterPro:IPR000236"
+                     /db_xref="UniProtKB/TrEMBL:Q17UT5"
+                     /translation="MAARLYCQLDPSRDVLCLRPVGAESRGRPLSGPLGTLSSPSPSA
+                     VPADHGAHLSLRGLPVCAFSSAGPCALRFTSARCMETTVNAHQILPKVLHKRTLGLPA
+                     MSTTDLEAYFKDCVFKDWEELGEEIRLKVFVLGGCRHKLVCAPAPCNFFTSA"
+     gene            1403..1626
+                     /gene="pC"
+                     /gene_synonym="C"
+                     /gene_synonym="P"
+     regulatory      1403..1626
+                     /regulatory_class="promoter"
+                     /gene="pC"
+                     /gene_synonym="C"
+                     /gene_synonym="P"
+                     /note="DNA/negative regulatory element (NRE)"
+     regulatory      1403..1455
+                     /regulatory_class="promoter"
+                     /gene="pC"
+                     /gene_synonym="C"
+                     /gene_synonym="P"
+                     /note="DNA/ negative regulatory element (NRE) gamma"
+     misc_RNA        1417..1458
+                     /gene="pC"
+                     /gene_synonym="C"
+                     /gene_synonym="P"
+                     /note="RNA/PRE HSL beta structure"
+     regulatory      1456..1519
+                     /regulatory_class="promoter"
+                     /gene="pC"
+                     /gene_synonym="C"
+                     /gene_synonym="P"
+                     /note="DNA/negative regulatory element (NRE) beta"
+     regulatory      1520..1576
+                     /regulatory_class="promoter"
+                     /gene="pC"
+                     /gene_synonym="C"
+                     /gene_synonym="P"
+                     /note="DNA/negative regulatory element (NRE) alpha"
+     primer_bind     1590..1600
+                     /note="DNA/primer binding DR1"
+     regulatory      1626..1817
+                     /regulatory_class="promoter"
+                     /gene="C"
+                     /note="core promoter"
+     regulatory      1636..1744
+                     /regulatory_class="enhancer"
+                     /gene="X"
+                     /note="DNA/enhancer 2 (enh 2) element"
+     regulatory      1644..1666
+                     /regulatory_class="other"
+                     /gene="X"
+                     /note="DNA/Enh 2 box alpha"
+     regulatory      1790..1794
+                     /regulatory_class="TATA_box"
+                     /gene="X"
+                     /note="pre C mRNA TATA like"
+     mRNA            join(1801..3221,1..1930)
+                     /gene="pre C/C"
+                     /product="precore mRNA"
+     CDS             1814..2458
+                     /gene="C"
+                     /codon_start=1
+                     /product="precore/HBeAg"
+                     /protein_id="CAK55118.1"
+                     /db_xref="GOA:Q17UT4"
+                     /db_xref="InterPro:IPR002006"
+                     /db_xref="InterPro:IPR013195"
+                     /db_xref="UniProtKB/TrEMBL:Q17UT4"
+                     /translation="MQLFHLCLIISCTCPTVQASKLCLGWLWGMDIDPYKEFGATVEL
+                     LSFLPSDFFPSVRDLLDTASALYREALESPEHCSPHHTALRQAILCWGELMTLATWVG
+                     NNLEDPASRDLVVNYVNTNMGLKIRQLLWFHISCLTFGRETVLEYLVSFGVWIRTPPA
+                     YRPPNAPILSTLPETTVVRRRDRGRSPRRRTPSPRRRRSQSPRRRRSQSRESQC"
+     mRNA            join(1818..3221,1..1930)
+                     /gene="C"
+                     /product="core mRNA"
+     primer_bind     1824..1834
+                     /note="primer binding DR2"
+     misc_RNA        1851..1904
+                     /gene="X"
+                     /product="RNA epsilon element structure"
+     gene            1852..1911
+                     /gene="C0"
+     CDS             1852..1911
+                     /gene="C0"
+                     /codon_start=1
+                     /product="C0 peptide"
+                     /protein_id="CAK55119.1"
+                     /db_xref="UniProtKB/TrEMBL:Q17UT3"
+                     /translation="MSHCSSLQAVPWVALGHGH"
+     variation       1896
+                     /gene="C0"
+                     /note="UGG>UGA"
+                     /replace="a"
+     CDS             1901..2458
+                     /gene="C"
+                     /codon_start=1
+                     /product="Core/HBcAg"
+                     /protein_id="CAK55120.1"
+                     /db_xref="GOA:Q17UT2"
+                     /db_xref="InterPro:IPR002006"
+                     /db_xref="UniProtKB/TrEMBL:Q17UT2"
+                     /translation="MDIDPYKEFGATVELLSFLPSDFFPSVRDLLDTASALYREALES
+                     PEHCSPHHTALRQAILCWGELMTLATWVGNNLEDPASRDLVVNYVNTNMGLKIRQLLW
+                     FHISCLTFGRETVLEYLVSFGVWIRTPPAYRPPNAPILSTLPETTVVRRRDRGRSPRR
+                     RTPSPRRRRSQSPRRRRSQSRESQC"
+     regulatory      1916..1921
+                     /regulatory_class="polyA_signal_sequence"
+                     /gene="X"
+     polyA_site      1930
+                     /gene="X"
+                     /note="PolyA cleavage site"
+     regulatory      2716..2834
+                     /regulatory_class="promoter"
+                     /gene="S1"
+                     /note="S1 promoter"
+     misc_feature    2835
+                     /gene="S1"
+                     /note="S1 transcript start"
+     regulatory      2966..3154
+                     /regulatory_class="promoter"
+                     /gene="S2"
+                     /note="S2 promoter"
+     gene            order(3185..3221,3211..3221,1..835,1..1930,2966..3154,
+                     3185)
+                     /gene="S2"
+     misc_feature    3185
+                     /gene="S2"
+                     /note="S2 transcript start"
+ORIGIN      
+        1 ttccactgcc ttccaccaag ctctgcagga tcccaaagtc aggggtctgt attttcctgc
+       61 tggtggctcc agttcaggaa cagtaaaccc tgctccgaat attgcctctc acatctcgtc
+      121 aatctccgcg aggactgggg accctgtgac gaatatggag aacatcacat caggattcct
+      181 aggacccctg ctcgtgttac aggcggggtt tttcttgttg acaagaatcc tcacaatacc
+      241 gcagagtcta gactcgtggt ggacttctct caattttcta gggggatcac ccgtgtgtct
+      301 tggccaaaat tcgcagtccc caacctccaa tcactcacca acctcctgtc ctccaatttg
+      361 tcctggttat cgctggatgt gtctgcggcg ttttatcata ttcctcttca tcctgctgct
+      421 atgcctcatc ttcttgttgg ttcttctgga ttatcaaggt atgttgcccg tttgtcctct
+      481 aattccagga acaacaacaa ccagtacggg accatgcaaa acctgcacga ctcctgctca
+      541 aggcaactct atgtttccct catgttgctg tacaaaacct tcggatggaa attgcacctg
+      601 tattcccatc ccatcgtctt gggctttcgc aaaataccta tgggagtggg cctcagtccg
+      661 tttctcttgg ctcagtttac tagtgccatt tgttcagtgg ttcgtagggc tttcccccac
+      721 tgtttggctt tcagctatat ggatgatgtg gtattggggg ccaagtctgt acagcatcgt
+      781 gagtcccttt ataccgctgt taccaatttt cttttgtctc tgggtataca tttaaaccct
+      841 aacaaaacaa aaagatgggg ttattcccta aacttcatgg gttacataat tggaagttgg
+      901 ggaacgttgc cacaggatca tattgtacaa aagatcaaac actgttttag aaaacttcct
+      961 gttaacaggc ctattgattg gaaagtatgt caaagaattg tgggtctttt gggctttgct
+     1021 gctccattta cacaatgtgg atatcctgcc ttaatgcctt tgtatgcctg tatacaagct
+     1081 aaacaggctt tcactttctc gccaacttac aaggcctttc taagtaaaca gtacatgaac
+     1141 ctttaccccg ttgctcggca acggcctggt ctgtgccaag tgtttgctga cgcaaccccc
+     1201 actggctggg gcttggccat aggccatcag cgcatgcgtg gaacctttgt ggctcctctg
+     1261 ccgatccata ctgcggaact cctagccgct tgttttgctc gcagccggtc tggggcaaag
+     1321 ctcatcggaa ctgacaattc tgtcgtcctc tcgcggaaat atacatcgtt tccatggctg
+     1381 ctaggttgta ctgccaactg gatccttcgc gggacgtcct ttgtttacgt cccgtcggcg
+     1441 ctgaatcccg cggacgaccc ctctcggggc cgcttgggac tctctcgtcc ccttctccgt
+     1501 ctgccgttcc agccgaccac ggggcgcacc tctctttacg cggtctcccc gtctgtgcct
+     1561 tctcatctgc cggtccgtgt gcacttcgct tcacctctgc acgttgcatg gagaccaccg
+     1621 tgaacgccca tcagatcctg cccaaggtct tacataagag gactcttgga ctcccagcaa
+     1681 tgtcaacgac cgaccttgag gcctacttca aagactgtgt gtttaaggac tgggaggagc
+     1741 tgggggagga gattaggtta aaggtctttg tattaggagg ctgtaggcat aaattggtct
+     1801 gcgcaccagc accatgcaac tttttcacct ctgcctaatc atctcttgta catgtcccac
+     1861 tgttcaagcc tccaagctgt gccttgggtg gctttggggc atggacattg acccttataa
+     1921 agaatttgga gctactgtgg agttactctc gtttttgcct tctgactttt ttccttccgt
+     1981 cagagatctc ctagacaccg cctcagctct gtatcgggaa gccttagagt ctcctgagca
+     2041 ttgctcacct caccatactg cactcaggca agcaattctc tgctgggggg aattgatgac
+     2101 tctagctacc tgggtgggta ataatttgga agatccagca tccagggatc tagtagtcaa
+     2161 ttatgttaat actaacatgg gtttaaagat caggcaacta ttgtggtttc atatatcttg
+     2221 ccttactttt ggaagagaga ctgtacttga atatttggtc tctttcggag tgtggattcg
+     2281 cactcctcca gcctatagac caccaaatgc ccctatctta tcaacacttc cggaaactac
+     2341 tgttgttaga cgacgggacc gaggcaggtc ccctagaaga agaactccct cgcctcgcag
+     2401 acgcagatct caatcgccgc gtcgcagaag atctcaatct cgggaatctc aatgttagta
+     2461 ttccttggac tcataaggtg ggaaacttta ctgggcttta ttcctctaca gtacctatct
+     2521 ttaatcctga atggcaaact ccttcctttc ctaagattca tttacaagag gacattatta
+     2581 ataggtgtca acaatttgtg ggccctctca ctgtaaatga aaagagaaga ttgaaattaa
+     2641 ttatgcctgc tagattctat cctacccaca ctaaatattt gcccttagac aaaggaatta
+     2701 aaccttatta tccagatcag gtagttaatc attacttcaa aaccagacat tatttacata
+     2761 ctctttggaa ggctggtatt ctatataaga gggaaaccac acgtagcgca tcattttgcg
+     2821 ggtcaccata ttcttgggaa caagagctac agcatgggag gttggtcatc gaaacctcgc
+     2881 aaaggcatgg ggacgaatct ttctgttccc aaccctctgg gattctttcc cgatcatcag
+     2941 ttggaccctg cattcggagc caactcaaac aatccagatt gggacttcaa ccccatcaag
+     3001 gaccactggc cagcagccaa ccaggtagga gtgggagcat tcgggccagg gttcacccct
+     3061 ccacacggcg gtgttttggg gtggagccct caggctcagg gcatattgac cacagtgtca
+     3121 acaattcctc ctcctgcctc caccaatcgg cagtcaggaa ggcagcctac tcccatctct
+     3181 ccacctctaa gagacagtca tcctcaggcc atgcagtgga a
+//
+
