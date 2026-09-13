@@ -72,25 +72,61 @@ add(experiment_id="Panjaworayan2010_PRE1317", sirna="", target_sequence="AAAGCTC
     reference_accession=REF_A, genotype="A", label=0.80, assay_type="cccDNA",
     cell_line="Huh7", source=f"{SRC_REV};ref[14];Panjaworayan2010")
 
-# Zhang et al. [13] — BMC Microbiology 2010, 40 shRNAs, 4 leads
-add(experiment_id="Zhang2010_B245", sirna="", target_sequence="AGTCTAGACTCGTGGTGGACT",
-    reference_accession=REF_A, genotype="A", label=0.80, assay_type="pgRNA",
-    cell_line="Huh7", source=f"{SRC_REV};ref[13];Zhang2010;B245")
-add(experiment_id="Zhang2010_B245_DNA", sirna="", target_sequence="AGTCTAGACTCGTGGTGGACT",
-    reference_accession=REF_A, genotype="A", label=0.90, assay_type="HBV_DNA",
-    cell_line="Huh7", source=f"{SRC_REV};ref[13];Zhang2010;B245")
-add(experiment_id="Zhang2010_B376", sirna="", target_sequence="GATGTGTCTGCGGCGTTTTAT",
-    reference_accession=REF_A, genotype="A", label=0.80, assay_type="pgRNA",
-    cell_line="Huh7", source=f"{SRC_REV};ref[13];Zhang2010;B376")
-add(experiment_id="Zhang2010_B1581", sirna="", target_sequence="GCACTTCGCTTCACCTCTGCA",
-    reference_accession=REF_A, genotype="A", label=0.70, assay_type="pgRNA",
-    cell_line="Huh7", source=f"{SRC_REV};ref[13];Zhang2010;B1581")
-add(experiment_id="Zhang2010_B1581_DNA", sirna="", target_sequence="GCACTTCGCTTCACCTCTGCA",
-    reference_accession=REF_A, genotype="A", label=0.80, assay_type="HBV_DNA",
-    cell_line="Huh7", source=f"{SRC_REV};ref[13];Zhang2010;B1581")
-add(experiment_id="Zhang2010_B1789", sirna="", target_sequence="AGGCTGTAGGCATAAATTGGT",
-    reference_accession=REF_A, genotype="A", label=0.70, assay_type="pgRNA",
-    cell_line="Huh7", source=f"{SRC_REV};ref[13];Zhang2010;B1789")
+# Zhang et al. [13] — BMC Microbiology 2010, full 40-shRNA screen (PMC2927532)
+# Qualitative HBsAg knockdown in two cell lines (Y1021=genotype C1, N10=genotype Ae):
+#   +++ = >90%, ++ = 50-90%, + = <50%, - = no significant inhibition
+# Map to fractional inhibition: +++ -> 0.95, ++ -> 0.70, + -> 0.30, - -> None
+# Label = mean of two cell lines (if one is "-", use the other; both "-" -> no label)
+_ZHANG_QUAL = {"+++": 0.95, "++": 0.70, "+": 0.30, "-": None}
+_ZHANG_DATA = [
+    ("B182",  "GGACCCCTGCTCGTGTTACAG", 182,  "S,P",       "++",  "+"),
+    ("B183",  "GACCCCTGCTCGTGTTACAGG", 183,  "S,P",       "-",   "-"),
+    ("B184",  "ACCCCTGCTCGTGTTACAGGC", 184,  "S,P",       "-",   "-"),
+    ("B243",  "AGAGTCTAGACTCGTGGTGGA", 243,  "S,P",       "+",   "+"),
+    ("B244",  "GAGTCTAGACTCGTGGTGGAC", 244,  "S,P",       "+++", "+++"),
+    ("B245",  "AGTCTAGACTCGTGGTGGACT", 245,  "S,P",       "+++", "+++"),
+    ("B246",  "GTCTAGACTCGTGGTGGACTT", 246,  "S,P",       "-",   "-"),
+    ("B250",  "AGACTCGTGGTGGACTTCTCT", 250,  "S,P",       "-",   "+"),
+    ("B251",  "GACTCGTGGTGGACTTCTCTC", 251,  "S,P",       "+",   "++"),
+    ("B252",  "ACTCGTGGTGGACTTCTCTCA", 252,  "S,P",       "++",  "++"),
+    ("B375",  "GGATGTGTCTGCGGCGTTTTA", 375,  "S,P",       "++",  "++"),
+    ("B376",  "GATGTGTCTGCGGCGTTTTAT", 376,  "S,P",       "+++", "+++"),
+    ("B377",  "ATGTGTCTGCGGCGTTTTATC", 377,  "S,P",       "+",   "++"),
+    ("B379",  "GTGTCTGCGGCGTTTTATCAT", 379,  "S,P",       "+",   "+"),
+    ("B410",  "ATCCTGCTGCTATGCCTCATC", 410,  "S,P",       "-",   "-"),
+    ("B415",  "GCTGCTATGCCTCATCTTCTT", 415,  "S,P",       "+",   "++"),
+    ("B456",  "AAGGTATGTTGCCCGTTTGTC", 456,  "S,P",       "++",  "++"),
+    ("B457",  "AGGTATGTTGCCCGTTTGTCC", 457,  "S,P",       "-",   "+"),
+    ("B458",  "GGTATGTTGCCCGTTTGTCCT", 458,  "S,P",       "++",  "++"),
+    ("B459",  "GTATGTTGCCCGTTTGTCCTC", 459,  "S,P",       "++",  "++"),
+    ("B461",  "ATGTTGCCCGTTTGTCCTCTA", 461,  "S,P",       "+",   "+"),
+    ("B1260", "GCCGATCCATACTGCGGAACT", 1260, "EnhI,P",    "+",   "++"),
+    ("B1577", "GTGTGCACTTCGCTTCACCTC", 1577, "X,P,DR1",   "+++", "++"),
+    ("B1579", "GTGCACTTCGCTTCACCTCTG", 1579, "X,P,DR1",   "++",  "++"),
+    ("B1581", "GCACTTCGCTTCACCTCTGCA", 1581, "X,P,DR1",   "+++", "+++"),
+    ("B1583", "ACTTCGCTTCACCTCTGCACG", 1583, "X,P,DR1",   "++",  "++"),
+    ("B1787", "GGAGGCTGTAGGCATAAATTG", 1787, "Pc,EnhII",  "++",  "++"),
+    ("B1788", "GAGGCTGTAGGCATAAATTGG", 1788, "Pc,EnhII",  "++",  "+"),
+    ("B1789", "AGGCTGTAGGCATAAATTGGT", 1789, "Pc,EnhII",  "+++", "+++"),
+    ("B1880", "AAGCCTCCAAGCTGTGCCTTG", 1880, "Pc",        "+",   "-"),
+    ("B1881", "AGCCTCCAAGCTGTGCCTTGG", 1881, "Pc",        "-",   "-"),
+    ("B2389", "AGAAGAAGAACTCCCTCGCCT", 2389, "C,P",       "-",   "+"),
+    ("B2390", "GAAGAAGAACTCCCTCGCCTC", 2390, "C,P",       "-",   "+"),
+    ("B2391", "AAGAAGAACTCCCTCGCCTCG", 2391, "C,P",       "-",   "-"),
+    ("B2392", "AGAAGAACTCCCTCGCCTCGC", 2392, "C,P",       "-",   "+"),
+    ("B2393", "GAAGAAGAACTCCCTCGCCTC", 2393, "C,P",       "-",   "+"),
+    ("B2394", "AAGAACTCCCTCGCCTCGCAG", 2394, "C,P",       "-",   "+"),
+    ("B2395", "AGAACTCCCTCGCCTCGCAGA", 2395, "C,P",       "+",   "+"),
+    ("B2396", "GAACTCCCTCGCCTCGCAGAC", 2396, "C,P",       "-",   "+"),
+    ("B2397", "GATCCATACTGCGGAACTCCT", 2397, "C,P",       "-",   "-"),
+]
+for _id, _seq, _pos, _loc, _y, _n in _ZHANG_DATA:
+    _ly, _ln = _ZHANG_QUAL[_y], _ZHANG_QUAL[_n]
+    _vals = [v for v in (_ly, _ln) if v is not None]
+    _label = sum(_vals) / len(_vals) if _vals else ""
+    add(experiment_id=f"Zhang2010_{_id}", sirna="", target_sequence=_seq,
+        reference_accession=REF_A, genotype="A", label=_label, assay_type="HBsAg",
+        cell_line="Huh7", source=f"PMC2927532;Zhang2010;{_id};pos{_pos};{_loc};Y1021={_y},N10={_n}")
 
 # Group II: conservation-based miRNA, liposome
 # Gao et al. [52]
