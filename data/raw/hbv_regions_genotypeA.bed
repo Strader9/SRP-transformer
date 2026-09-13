@@ -1,0 +1,13 @@
+# HBV genotype A (AM282986) functional regions, 0-based half-open
+# Generated from GenBank CDS features; circular-genome ORFs split
+# Genome length: 3221 bp
+chrHBV_A	2306	3221	P
+chrHBV_A	0	1623	P
+chrHBV_A	2853	3221	S
+chrHBV_A	0	835	S
+chrHBV_A	3210	3221	S
+chrHBV_A	0	835	S
+chrHBV_A	154	835	S
+chrHBV_A	1373	1838	X
+chrHBV_A	1813	2458	C
+chrHBV_A	1900	2458	C
