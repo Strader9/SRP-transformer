@@ -75,9 +75,8 @@ add(experiment_id="Panjaworayan2010_PRE1317", sirna="", target_sequence="AAAGCTC
 # Zhang et al. [13] — BMC Microbiology 2010, full 40-shRNA screen (PMC2927532)
 # Qualitative HBsAg knockdown in two cell lines (Y1021=genotype C1, N10=genotype Ae):
 #   +++ = >90%, ++ = 50-90%, + = <50%, - = no significant inhibition
-# Map to fractional inhibition: +++ -> 0.95, ++ -> 0.70, + -> 0.30, - -> None
-# Label = mean of two cell lines (if one is "-", use the other; both "-" -> no label)
-_ZHANG_QUAL = {"+++": 0.95, "++": 0.70, "+": 0.30, "-": None}
+# NOTE: qualitative only — NO numeric label assigned (kept as candidate pool).
+#       Mapping +/++/+++ to fractions would be subjective and is intentionally avoided.
 _ZHANG_DATA = [
     ("B182",  "GGACCCCTGCTCGTGTTACAG", 182,  "S,P",       "++",  "+"),
     ("B183",  "GACCCCTGCTCGTGTTACAGG", 183,  "S,P",       "-",   "-"),
@@ -121,12 +120,10 @@ _ZHANG_DATA = [
     ("B2397", "GATCCATACTGCGGAACTCCT", 2397, "C,P",       "-",   "-"),
 ]
 for _id, _seq, _pos, _loc, _y, _n in _ZHANG_DATA:
-    _ly, _ln = _ZHANG_QUAL[_y], _ZHANG_QUAL[_n]
-    _vals = [v for v in (_ly, _ln) if v is not None]
-    _label = sum(_vals) / len(_vals) if _vals else ""
+    # Qualitative efficacy only (+/++/+++/-) — no numeric label, kept as candidate pool
     add(experiment_id=f"Zhang2010_{_id}", sirna="", target_sequence=_seq,
-        reference_accession=REF_A, genotype="A", label=_label, assay_type="HBsAg",
-        cell_line="Huh7", source=f"PMC2927532;Zhang2010;{_id};pos{_pos};{_loc};Y1021={_y},N10={_n}")
+        reference_accession=REF_A, genotype="A", label="", assay_type="HBsAg",
+        cell_line="Huh7", source=f"PMC2927532;Zhang2010;{_id};pos{_pos};{_loc};Y1021={_y},N10={_n};QUALITATIVE_ONLY")
 
 # Group II: conservation-based miRNA, liposome
 # Gao et al. [52]
