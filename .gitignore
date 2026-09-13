@@ -9,6 +9,7 @@ data/processed/*
 !data/raw/hbv_experiments_template.csv
 !data/raw/hbv_regions_example.bed
 !data/raw/hbv_experiments.csv
+!data/raw/genomes/
 checkpoints/*
 !checkpoints/.gitkeep
 results/*
