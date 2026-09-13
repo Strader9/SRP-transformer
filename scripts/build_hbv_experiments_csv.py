@@ -36,6 +36,7 @@ def add(**kw):
 # Reference genome: genotype A (AM282986), EcoRI-based numbering
 # ---------------------------------------------------------------------------
 REF_A = "AM282986"
+REF_D_AYW = "V01460"
 SRC_REV = "PMC3132485"
 
 # Group I: conservation-based shRNA, liposome delivery, human liver cell line
@@ -125,6 +126,20 @@ for _id, _seq, _pos, _loc, _y, _n in _ZHANG_DATA:
         reference_accession=REF_A, genotype="A", label="", assay_type="HBsAg",
         cell_line="Huh7", source=f"PMC2927532;Zhang2010;{_id};pos{_pos};{_loc};Y1021={_y},N10={_n};QUALITATIVE_ONLY")
 
+# Wang et al. 2010 (PMC2778861) — 4 siRNAs targeting HBsAg, precise mRNA knockdown
+# Reference: genotype D ayw (U95551, same subtype as V01460); HepG2.2.15 cells
+# Label = HBsAg mRNA inhibition at 80nM (72h), precise values from real-time PCR
+# S3 sequence not available (only S1/S2/S4 converted to shRNA in paper)
+add(experiment_id="Wang2010_S1", sirna="", target_sequence="GTGGTGGACTTCTCTCAAT",
+    reference_accession=REF_D_AYW, genotype="D", label=0.7177, assay_type="HBsAg_mRNA",
+    cell_line="HepG2.2.15", source="PMC2778861;Wang2010;siRNA-S1;HBsAg_pos256;80nM_72h;mRNA")
+add(experiment_id="Wang2010_S2", sirna="", target_sequence="AACCTCCAATCACTCACCAA",
+    reference_accession=REF_D_AYW, genotype="D", label=0.5879, assay_type="HBsAg_mRNA",
+    cell_line="HepG2.2.15", source="PMC2778861;Wang2010;siRNA-S2;HBsAg_pos322;80nM_72h;mRNA")
+add(experiment_id="Wang2010_S4", sirna="", target_sequence="GGTATGTTGCCCGTTTGTCC",
+    reference_accession=REF_D_AYW, genotype="D", label=0.8469, assay_type="HBsAg_mRNA",
+    cell_line="HepG2.2.15", source="PMC2778861;Wang2010;siRNA-S4;HBsAg_pos458;80nM_72h;mRNA")
+
 # Group II: conservation-based miRNA, liposome
 # Gao et al. [52]
 add(experiment_id="Gao2008_miR155_S608", sirna="", target_sequence="CCAAGTCTGTACAGCATCGTGA",
@@ -160,7 +175,6 @@ add(experiment_id="Peng2005_S3", sirna="", target_sequence="AAATTGCACCTGTATTCCCA
 # Reference: HBV ayw (genotype D), EcoRI-based numbering
 # Knockdown of 3.5 kb pgRNA at stated plasmid dose in Huh-7 cells
 # ---------------------------------------------------------------------------
-REF_D_AYW = "V01460"
 SRC_ELY = "PMC2770508;Ely2009"
 
 # HBVU6#2 benchmark: 2ug -> 69.1%, 0.5ug -> 48.8% pgRNA knockdown
