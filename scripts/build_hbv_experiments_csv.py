@@ -180,6 +180,78 @@ for _id, _seq, _lbl in _HUANG2026_A:
         cell_line="HepG2.2.15",
         source=f"NatCommun2026;Huang2026;{_id};0.28nM_Day6;3reps_mean;chem_modified;SourceData1")
 
+# Huang2026 A-series at 0.065 nM (26 records, 3 reps mean)
+_HUANG2026_A_065 = [
+    ("A1", "TCGTGTTACAGGCGGGGTTTT", -0.0628), ("A10", "TGGTGGACTTCTCTCAATTTT", 0.1731),
+    ("A11", "GTGGACTTCTCTCAATTTTCT", 0.4522), ("A12", "GTGTCTGCGGCGTTTTATCAT", 0.1188),
+    ("A13", "TCCTGCTGCTATGCCTCATCT", 0.1223), ("A14", "TGCTGCTATGCCTCATCTTCT", 0.2923),
+    ("A15", "ATGTTGCCCGTTTGTCCTCTA", 0.0907), ("A16", "CTGCTCAAGGAACCTCTATGT", 0.2512),
+    ("A17", "TAGGGCTTTCCCCCACTGTTT", -0.0417), ("A18", "CAGTTATATGGATGATGTGGT", 0.0618),
+    ("A19", "CTGCCGATCCATACTGCGGAA", 0.158), ("A2", "TACAGGCGGGGTTTTTCTTGT", 0.1431),
+    ("A20", "ATCCATACTGCGGAACTCCTA", 0.096), ("A21", "ACCACGGGGCGCACCTCTCTT", -0.0464),
+    ("A22", "CACGGGGCGCACCTCTCTTTA", 0.0675), ("A23", "CTCCCCGTCTGTGCCTTCTCA", 0.2115),
+    ("A24", "TCCCCGTCTGTGCCTTCTCAT", 0.2515), ("A25", "CCCGTCTGTGCCTTCTCATCT", 0.3877),
+    ("A26", "CGGACCGTGTGCACTTCGCTT", 0.3084), ("A3", "AGGCGGGGTTTTTCTTGTTGA", 0.1659),
+    ("A4", "GCGGGGTTTTTCTTGTTGACA", 0.2282), ("A5", "CGGGGTTTTTCTTGTTGACAA", 0.3927),
+    ("A6", "GTCTAGACTCGTGGTGGACTT", 0.1391), ("A7", "CTCGTGGTGGACTTCTCTCAA", 0.0874),
+    ("A8", "TCGTGGTGGACTTCTCTCAAT", 0.2089), ("A9", "GTGGTGGACTTCTCTCAATTT", 0.1715),
+]
+for _id, _seq, _lbl in _HUANG2026_A_065:
+    add(experiment_id=f"Huang2026_{_id}_065nM", sirna="", target_sequence=_seq,
+        reference_accession=REF_D_AYW, genotype="D", label=_lbl, assay_type="HBsAg",
+        cell_line="HepG2.2.15",
+        source=f"NatCommun2026;Huang2026;{_id};0.065nM_Day6;3reps_mean;chem_modified;SourceData1")
+
+# Huang2026 A-series at 0.14 nM (26 records, 3 reps mean)
+_HUANG2026_A_014 = [
+    ("A1", "TCGTGTTACAGGCGGGGTTTT", 0.0225), ("A10", "TGGTGGACTTCTCTCAATTTT", 0.6261),
+    ("A11", "GTGGACTTCTCTCAATTTTCT", 0.9501), ("A12", "GTGTCTGCGGCGTTTTATCAT", -0.043),
+    ("A13", "TCCTGCTGCTATGCCTCATCT", 0.3725), ("A14", "TGCTGCTATGCCTCATCTTCT", 0.8858),
+    ("A15", "ATGTTGCCCGTTTGTCCTCTA", 0.3719), ("A16", "CTGCTCAAGGAACCTCTATGT", 0.3196),
+    ("A17", "TAGGGCTTTCCCCCACTGTTT", 0.2972), ("A18", "CAGTTATATGGATGATGTGGT", 0.6035),
+    ("A19", "CTGCCGATCCATACTGCGGAA", 0.885), ("A2", "TACAGGCGGGGTTTTTCTTGT", 0.7877),
+    ("A20", "ATCCATACTGCGGAACTCCTA", 0.4675), ("A21", "ACCACGGGGCGCACCTCTCTT", 0.239),
+    ("A22", "CACGGGGCGCACCTCTCTTTA", -0.1627), ("A23", "CTCCCCGTCTGTGCCTTCTCA", 0.7677),
+    ("A24", "TCCCCGTCTGTGCCTTCTCAT", 0.8505), ("A25", "CCCGTCTGTGCCTTCTCATCT", 0.9055),
+    ("A26", "CGGACCGTGTGCACTTCGCTT", 0.9209), ("A3", "AGGCGGGGTTTTTCTTGTTGA", 0.9087),
+    ("A4", "GCGGGGTTTTTCTTGTTGACA", 0.8416), ("A5", "CGGGGTTTTTCTTGTTGACAA", 0.9817),
+    ("A6", "GTCTAGACTCGTGGTGGACTT", 0.5832), ("A7", "CTCGTGGTGGACTTCTCTCAA", 0.5286),
+    ("A8", "TCGTGGTGGACTTCTCTCAAT", 0.5452), ("A9", "GTGGTGGACTTCTCTCAATTT", 0.557),
+]
+for _id, _seq, _lbl in _HUANG2026_A_014:
+    add(experiment_id=f"Huang2026_{_id}_014nM", sirna="", target_sequence=_seq,
+        reference_accession=REF_D_AYW, genotype="D", label=_lbl, assay_type="HBsAg",
+        cell_line="HepG2.2.15",
+        source=f"NatCommun2026;Huang2026;{_id};0.14nM_Day6;3reps_mean;chem_modified;SourceData1")
+
+# Huang2026 KC13-M2G2 dose-response (9 doses, 3 reps mean)
+_HUANG2026_KC13 = [
+    (0.000153, "GGGGTTTTTCTTGTTGACAA", -0.0006), (0.000610, "GGGGTTTTTCTTGTTGACAA", 0.0631),
+    (0.002441, "GGGGTTTTTCTTGTTGACAA", 0.0922), (0.009766, "GGGGTTTTTCTTGTTGACAA", 0.2544),
+    (0.039062, "GGGGTTTTTCTTGTTGACAA", 0.5736), (0.156250, "GGGGTTTTTCTTGTTGACAA", 0.8686),
+    (0.625000, "GGGGTTTTTCTTGTTGACAA", 0.9747), (2.500000, "GGGGTTTTTCTTGTTGACAA", 0.988),
+    (10.000000, "GGGGTTTTTCTTGTTGACAA", 0.9894),
+]
+for _dose, _seq, _lbl in _HUANG2026_KC13:
+    add(experiment_id=f"Huang2026_KC13_{_dose}nM", sirna="", target_sequence=_seq,
+        reference_accession=REF_D_AYW, genotype="D", label=_lbl, assay_type="HBsAg",
+        cell_line="HepG2.2.15",
+        source=f"NatCommun2026;Huang2026;KC13-M2G2;{_dose}nM_Day6;3reps_mean;chem_modified;SourceData1")
+
+# Huang2026 Elebsiran dose-response (9 doses, 3 reps mean)
+_HUANG2026_ELEB = [
+    (0.000153, "GTGTGCACTTCGCTTCACA", 0.0178), (0.000610, "GTGTGCACTTCGCTTCACA", 0.0391),
+    (0.002441, "GTGTGCACTTCGCTTCACA", 0.0361), (0.009766, "GTGTGCACTTCGCTTCACA", 0.1614),
+    (0.039062, "GTGTGCACTTCGCTTCACA", 0.3656), (0.156250, "GTGTGCACTTCGCTTCACA", 0.6942),
+    (0.625000, "GTGTGCACTTCGCTTCACA", 0.9138), (2.500000, "GTGTGCACTTCGCTTCACA", 0.9663),
+    (10.000000, "GTGTGCACTTCGCTTCACA", 0.9818),
+]
+for _dose, _seq, _lbl in _HUANG2026_ELEB:
+    add(experiment_id=f"Huang2026_Eleb_{_dose}nM", sirna="", target_sequence=_seq,
+        reference_accession=REF_D_AYW, genotype="D", label=_lbl, assay_type="HBsAg",
+        cell_line="HepG2.2.15",
+        source=f"NatCommun2026;Huang2026;Elebsiran;{_dose}nM_Day6;3reps_mean;chem_modified;SourceData1")
+
 # Group II: conservation-based miRNA, liposome
 # Gao et al. [52]
 add(experiment_id="Gao2008_miR155_S608", sirna="", target_sequence="CCAAGTCTGTACAGCATCGTGA",
