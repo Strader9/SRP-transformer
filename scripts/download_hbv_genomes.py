@@ -14,7 +14,7 @@ import time
 import urllib.request
 from pathlib import Path
 
-REPO = Path(r"C:\Users\34359\Documents\SRP\SRP-transformer-HBV-v0.1")
+REPO = Path(__file__).resolve().parents[1]
 OUT_DIR = REPO / "data" / "raw" / "genomes"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 

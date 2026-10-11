@@ -6,7 +6,7 @@ Compares 4 strategies (3 seeds each, locus split, lr=5e-4, bs=8, 25 epochs):
   3. dir4 only: pretrain init + freeze encoder
   4. combined: pretrain init (full finetune) + gd0.25 + cw0.1
 """
-import sys, json
+import sys, json, argparse
 from pathlib import Path
 
 import numpy as np
@@ -14,7 +14,7 @@ import torch
 from torch import nn
 from torch.utils.data import DataLoader, Subset
 
-REPO = Path(r"C:\Users\34359\Documents\SRP\SRP-transformer-HBV-v0.1")
+REPO = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO))
 
 from hbv_sirna.data import HBVMultiGenotypeDataset
@@ -52,7 +52,7 @@ def train_loop(dataset, train_idx, valid_idx, model, device, tag,
         model.train()
         for batch in train_loader:
             optimizer.zero_grad()
-            inputs = {k: v.to(device) for k, v in batch.items() if k not in {"sample_id", "label"}}
+            inputs = {k: v.to(device) for k, v in batch.items() if k not in {"sample_id", "label", "task_id"}}
             pred = model(**inputs)
             loss = criterion(pred, batch["label"].to(device))
             if consistency_weight > 0 and genotype_dropout > 0:
@@ -71,19 +71,33 @@ def train_loop(dataset, train_idx, valid_idx, model, device, tag,
         losses = []
         with torch.no_grad():
             for batch in valid_loader:
-                pred = model(**{k: v.to(device) for k, v in batch.items() if k not in {"sample_id", "label"}})
+                pred = model(**{k: v.to(device) for k, v in batch.items() if k not in {"sample_id", "label", "task_id"}})
                 losses.append(criterion(pred, batch["label"].to(device)).item())
         mse = float(np.mean(losses))
         if mse < best:
             best = mse
             ckpt_dir = OUT / f"ckpt_p3_{tag}"
             ckpt_dir.mkdir(parents=True, exist_ok=True)
-            torch.save({"state_dict": model.state_dict(), "feature_dim": dataset.feature_dim},
+            torch.save({"state_dict": model.state_dict(), "feature_dim": dataset.feature_dim,
+                        "task_names": dataset.task_names, "output_activation": "identity",
+                        "positional_encoding": model.positional_encoding, "fusion": model.fusion,
+                        "num_tasks": model.num_tasks, "sequence_length": dataset.sequence_length,
+                        "max_genotypes": dataset.max_genotypes,
+                        "model_config": {"d_model": 128, "nhead": 4, "sequence_layers": 2,
+                                         "genotype_layers": 2, "dropout": 0.1}},
                        ckpt_dir / "best.pt")
     return best
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--allow-inferred-guides", action="store_true",
+                        help="Allow proxy guides inferred from target regions; exploratory only")
+    args = parser.parse_args()
+    hbv_dataset = HBVMultiGenotypeDataset(HBV)
+    inferred_count = sum(sample.sirna_inferred for sample in hbv_dataset.samples)
+    if inferred_count and not args.allow_inferred_guides:
+        raise SystemExit(f"HBV data contains {inferred_count} inferred guides; pass --allow-inferred-guides for exploratory runs")
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Device: {device}")
 
@@ -100,7 +114,6 @@ def main() -> None:
     enc_state = {k: v for k, v in saved["state_dict"].items() if k.startswith("sequence_encoder.")}
     print(f"Loaded pretrained sequence_encoder ({len(enc_state)} tensors)")
 
-    hbv_dataset = HBVMultiGenotypeDataset(HBV)
     print(f"HBV samples: {len(hbv_dataset)}")
 
     strategies = [

@@ -11,12 +11,13 @@ Usage:
 import json
 import sys
 import tempfile
+import argparse
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
 
-REPO = Path(r"C:\Users\34359\Documents\SRP\SRP-transformer-HBV-v0.1")
+REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO))
 
 from hbv_sirna.train import train_model
@@ -42,7 +43,7 @@ def make_single_genotype_csv(src: Path, dst: Path) -> None:
     pd.DataFrame(rows).to_csv(dst, index=False)
 
 
-def run_ablation(csv_path: Path, seeds: list[int], tag: str) -> list[float]:
+def run_ablation(csv_path: Path, seeds: list[int], tag: str, allow_inferred_guides: bool) -> list[float]:
     mses = []
     for seed in seeds:
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -50,7 +51,7 @@ def run_ablation(csv_path: Path, seeds: list[int], tag: str) -> list[float]:
             metrics = train_model(
                 str(csv_path), str(ckpt),
                 epochs=EPOCHS, batch_size=BATCH_SIZE, learning_rate=LR,
-                seed=seed, split_by="random",
+                seed=seed, split_by="locus", allow_inferred_guides=allow_inferred_guides,
             )
             mse = metrics["best_valid_mse"]
             mses.append(mse)
@@ -60,6 +61,10 @@ def run_ablation(csv_path: Path, seeds: list[int], tag: str) -> list[float]:
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--allow-inferred-guides", action="store_true",
+                        help="Allow proxy guides inferred from target regions; exploratory only")
+    args = parser.parse_args()
     df = pd.read_csv(SRC)
     print(f"Dataset: {len(df)} candidates, "
           f"n_genotypes={len(json.loads(df.iloc[0]['target_sequences']))}")
@@ -72,10 +77,10 @@ def main() -> None:
         make_single_genotype_csv(SRC, single_csv)
 
         print(f"\n=== Single-genotype (1 target per candidate) ===")
-        single_mses = run_ablation(single_csv, seeds, "single")
+        single_mses = run_ablation(single_csv, seeds, "single", args.allow_inferred_guides)
 
         print(f"\n=== 8-genotype (8 targets per candidate) ===")
-        multi_mses = run_ablation(SRC, seeds, "multi")
+        multi_mses = run_ablation(SRC, seeds, "multi", args.allow_inferred_guides)
 
     # Summary
     print(f"\n{'='*60}")

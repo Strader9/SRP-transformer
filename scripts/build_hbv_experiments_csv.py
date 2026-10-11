@@ -7,7 +7,8 @@ Sources:
 - PMC2770508 (Ely et al. 2009, Mol Ther): 14 rationally designed HBV-miRs + HBVU6#2
 - PMC3666629 (Morrissey et al. 2014): 4 lead siRNAs (siHBV-74/75/76/77)
 
-Label convention: fractional inhibition (0-1) = 1 - residual_fraction.
+Label convention: inhibition = 1 - residual_fraction; negative values are
+preserved when treatment increases the measured signal above its control.
 assay_type records what was measured (pgRNA, HBV_DNA, HBsAg, total_RNA, cccDNA).
 Rows without a confirmed numeric label have label empty (usable for candidate ranking,
 excluded from training by train.py).
@@ -16,7 +17,8 @@ excluded from training by train.py).
 import csv
 from pathlib import Path
 
-OUT = Path(r"C:\Users\34359\Documents\SRP\SRP-transformer-HBV-v0.1\data\raw\hbv_experiments.csv")
+REPO = Path(__file__).resolve().parents[1]
+OUT = REPO / "data" / "raw" / "hbv_experiments.csv"
 
 FIELDS = [
     "experiment_id", "sirna", "target_sequence", "reference_accession",

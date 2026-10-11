@@ -15,5 +15,5 @@ jobs:
           cache: pip
       - run: pip install -e ".[dev]"
       - run: pytest -q
-      - run: docker build -t hbv-oligoformer:test .
+      - run: docker build -t hbv-sirna-transformer:test .
 

@@ -1,10 +1,19 @@
 """Phase 3 Direction 2: Genotype dropout + consistency regularization search"""
-import sys, json, numpy as np
-sys.path.insert(0, r'C:\Users\34359\Documents\SRP\SRP-transformer-HBV-v0.1')
+import sys, json, argparse, numpy as np
+from pathlib import Path
+REPO = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(REPO))
 from hbv_sirna.train import train_model
 
-DATA = r'C:\Users\34359\Documents\SRP\SRP-transformer-HBV-v0.1\data\processed\candidates_full_features.csv'
-OUT = r'C:\Users\34359\Documents\SRP\SRP-transformer-HBV-v0.1\results'
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument("--allow-inferred-guides", action="store_true",
+                    help="Allow proxy guides inferred from target regions; exploratory only")
+args = parser.parse_args()
+if not args.allow_inferred_guides:
+    parser.error("current HBV records include inferred guides; pass --allow-inferred-guides for exploratory analysis")
+
+DATA = REPO / 'data' / 'processed' / 'candidates_full_features.csv'
+OUT = REPO / 'results'
 
 LR = 5e-4
 BS = 8
@@ -24,12 +33,13 @@ results = {}
 for gd, cw, tag in CONFIGS:
     seed_mses = []
     for seed in range(N_SEEDS):
-        ckpt_dir = f'{OUT}/ckpt_p3_{tag}_s{seed}'
-        m = train_model(DATA, ckpt_dir,
+        ckpt_dir = OUT / f'ckpt_p3_{tag}_s{seed}'
+        m = train_model(str(DATA), str(ckpt_dir),
                         epochs=EPOCHS, batch_size=BS,
                         learning_rate=LR, weight_decay=1e-4,
                         seed=seed, split_by='locus',
-                        genotype_dropout=gd, consistency_weight=cw)
+                        genotype_dropout=gd, consistency_weight=cw,
+                        allow_inferred_guides=args.allow_inferred_guides)
         seed_mses.append(m['best_valid_mse'])
         print(f'  {tag} seed={seed}: MSE={m["best_valid_mse"]:.4f}')
     results[tag] = {
@@ -39,7 +49,7 @@ for gd, cw, tag in CONFIGS:
         'all': [float(x) for x in seed_mses]
     }
 
-out_path = f'{OUT}/phase3_direction2_search.json'
+out_path = OUT / 'phase3_direction2_search.json'
 with open(out_path, 'w') as f:
     json.dump(results, f, indent=2)
 

@@ -20,7 +20,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-REPO = Path(r"C:\Users\34359\Documents\SRP\SRP-transformer-HBV-v0.1")
+REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO))
 
 from hbv_sirna.annotation import parse_bed, overlapping_classes

@@ -16,12 +16,12 @@ import pandas as pd
 import torch
 from torch.utils.data import DataLoader
 
-REPO = Path(r"C:\Users\34359\Documents\SRP\SRP-transformer-HBV-v0.1")
+REPO = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO))
 
 from hbv_sirna.annotation import parse_bed, overlapping_classes
 from hbv_sirna.data import HBVMultiGenotypeDataset
-from hbv_sirna.model import HBVMultiGenotypeModel
+from hbv_sirna.model import HBVMultiGenotypeModel, apply_checkpoint_output, load_compatible_state_dict
 from hbv_sirna.sequence import conservation_profile
 
 GENOMES_DIR = REPO / "data" / "raw" / "genomes"
@@ -168,38 +168,60 @@ def main() -> None:
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     preds = []
+    task_names = None
     for ckpt in CKPTS:
         saved = torch.load(ckpt, map_location=device, weights_only=True)
-        model = HBVMultiGenotypeModel(hbv_feature_dim=int(saved["feature_dim"])).to(device)
-        model.load_state_dict(saved["state_dict"])
+        saved_tasks = saved.get("task_names", ["hbv_score"])
+        if task_names is not None and saved_tasks != task_names:
+            raise ValueError("Ensemble checkpoints have different output task names")
+        task_names = saved_tasks
+        model = HBVMultiGenotypeModel(
+            **saved.get("model_config", {}),
+            hbv_feature_dim=int(saved["feature_dim"]),
+            num_tasks=int(saved.get("num_tasks", 1)),
+            fusion=saved.get("fusion", "concat"),
+            positional_encoding=bool(saved.get("positional_encoding", False)),
+            sequence_length=int(saved.get("sequence_length", 19)),
+        ).to(device)
+        load_compatible_state_dict(model, saved["state_dict"])
         model.eval()
         with torch.no_grad():
             for batch in loader:
-                out = model(**{k: v.to(device) for k, v in batch.items() if k not in {"sample_id", "label"}})
+                out = model(**{k: v.to(device) for k, v in batch.items() if k not in {"sample_id", "label", "task_id"}})
+                out = apply_checkpoint_output(out, saved)
                 preds.append(out.cpu().numpy())
 
-    stack = np.stack(preds)  # (5, n)
+    stack = np.stack(preds)
     mean = stack.mean(axis=0)
     std = stack.std(axis=0)
-
-    result = pd.DataFrame({
+    result_data = {
         "sample_id": [s.sample_id for s in dataset.samples],
         "sirna": cand_df["sirna"].tolist(),
         "sirna_full": cand_df["sirna_full"].tolist(),
-        "ensemble_mean": mean,
-        "ensemble_std": std,
         "n_models": len(CKPTS),
-    })
-    result = result.sort_values("ensemble_std", ascending=False).reset_index(drop=True)
+    }
+    if mean.ndim == 1:
+        result_data["ensemble_mean"] = mean
+        result_data["ensemble_std"] = std
+        sort_column = "ensemble_std"
+    else:
+        for task_id, task_name in enumerate(task_names or []):
+            result_data[f"{task_name}_mean"] = mean[:, task_id]
+            result_data[f"{task_name}_std"] = std[:, task_id]
+        sort_column = f"{(task_names or ['task'])[0]}_std"
+    result = pd.DataFrame(result_data).sort_values(sort_column, ascending=False).reset_index(drop=True)
     OUT_CSV.parent.mkdir(parents=True, exist_ok=True)
     result.to_csv(OUT_CSV, index=False)
 
     print(f"\n=== Deep Ensemble Uncertainty (5 models, ckpt_seq_s0..s4) ===")
     print("Ranked by uncertainty (std) - highest uncertainty = most informative to test first")
-    print(f"{'sample_id':<22}{'mean':>8}{'std':>8}   sirna19")
-    print("-" * 60)
-    for _, r in result.iterrows():
-        print(f"{r['sample_id']:<22}{r['ensemble_mean']:>8.4f}{r['ensemble_std']:>8.4f}   {r['sirna']}")
+    if "ensemble_mean" in result.columns:
+        print(f"{'sample_id':<22}{'mean':>8}{'std':>8}   sirna19")
+        print("-" * 60)
+        for _, r in result.iterrows():
+            print(f"{r['sample_id']:<22}{r['ensemble_mean']:>8.4f}{r['ensemble_std']:>8.4f}   {r['sirna']}")
+    else:
+        print(result.head(10).to_string(index=False))
     print(f"\nSaved to {OUT_CSV}")
 
 

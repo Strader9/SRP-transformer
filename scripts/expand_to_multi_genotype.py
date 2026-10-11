@@ -21,7 +21,7 @@ from pathlib import Path
 
 import pandas as pd
 
-REPO = Path(r"C:\Users\34359\Documents\SRP\SRP-transformer-HBV-v0.1")
+REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO))
 
 GENOMES_DIR = REPO / "data" / "raw" / "genomes"
@@ -141,7 +141,7 @@ def main() -> None:
                   f"match dist={distances[ref_idx]} (not exact), pos={positions[ref_idx]}")
 
         total_match_dist.extend(distances)
-        rows.append({
+        row = {
             "sample_id": rec["sample_id"],
             "sirna": rec["sirna"],
             "target_sequences": json.dumps(targets),
@@ -150,7 +150,12 @@ def main() -> None:
             "label": rec["label"],
             "_match_distances": json.dumps(distances),
             "_match_positions": json.dumps(positions),
-        })
+        }
+        for column in ("_pair_identity", "_guide_inferred", "reference_accession", "assay_type", "genotype",
+                       "dose_nm", "time_h", "cell_line", "source"):
+            if column in rec.index:
+                row[column] = rec[column]
+        rows.append(row)
 
     out = pd.DataFrame(rows)
     DST.parent.mkdir(parents=True, exist_ok=True)

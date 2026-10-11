@@ -20,7 +20,7 @@ from hbv_sirna.annotation import (
     parse_bed,
 )
 from hbv_sirna.prepare import build_candidate_table
-from hbv_sirna.train import _locus_group, _split_indices
+from hbv_sirna.train import _group_kfold_indices, _locus_group, _split_indices
 
 DATA = Path(__file__).parent / "data"
 
@@ -164,12 +164,81 @@ def test_locus_split_keeps_same_locus_together():
             return len(self.samples)
 
     # 4 samples: locus 10 (x2), locus 20 (x1), locus 30 (x1)
-    ds = _DS([_S("r:10-28"), _S("r:10-28"), _S("r:20-38"), _S("r:30-48")])
+    ds = _DS([_S("r:10-28"), _S("r:10-28"), _S("r:40-58"), _S("r:70-88")])
     train_idx, valid_idx = _split_indices(ds, seed=42, split_by="locus", val_ratio=0.5)
     # The two locus-10 samples must be in the same split
     locus10_indices = {0, 1}
     assert locus10_indices.issubset(set(train_idx)) or locus10_indices.issubset(set(valid_idx))
     assert len(set(train_idx) & set(valid_idx)) == 0
+
+
+def test_locus_split_keeps_overlapping_target_intervals_together():
+    class _S:
+        def __init__(self, sid):
+            self.sample_id = sid
+
+    class _DS:
+        def __init__(self, samples):
+            self.samples = samples
+
+        def __len__(self):
+            return len(self.samples)
+
+    ds = _DS([_S("r:10-28"), _S("r:20-38"), _S("r:70-88"), _S("r:110-128")])
+    train_idx, valid_idx = _split_indices(ds, seed=42, split_by="locus", val_ratio=0.5)
+    assert {0, 1}.issubset(set(train_idx)) or {0, 1}.issubset(set(valid_idx))
+
+
+def test_genotype_holdout_splits_by_assay_genotype():
+    class _S:
+        def __init__(self, genotype):
+            self.genotype = genotype
+            self.sample_id = genotype
+
+    class _DS:
+        samples = [_S("A"), _S("A"), _S("D"), _S("D")]
+
+        def __len__(self):
+            return len(self.samples)
+
+    train_idx, valid_idx = _split_indices(_DS(), seed=1, split_by="genotype", held_out_genotype="D")
+    assert train_idx == [0, 1]
+    assert valid_idx == [2, 3]
+
+
+def test_dataset_view_exposes_only_requested_genotype(tmp_path):
+    import json
+    import pandas as pd
+    from hbv_sirna.data import HBVMultiGenotypeDataset
+
+    path = tmp_path / "samples.csv"
+    pd.DataFrame([{
+        "sample_id": "sample1", "sirna": "A" * 19,
+        "target_sequences": json.dumps(["A" * 19, "C" * 19]),
+        "genotype_ids": json.dumps(["A", "D"]),
+        "hbv_features": "[]", "label": -0.1, "assay_type": "HBsAg",
+    }]).to_csv(path, index=False)
+    dataset = HBVMultiGenotypeDataset(path, max_genotypes=4, visible_genotypes={"D"})
+    sample = dataset[0]
+    assert sample["genotype_mask"].tolist() == [True, False, False, False]
+    assert sample["target_tokens"][0].tolist() == [1] * 19
+    assert sample["label"].item() == pytest.approx(-0.1)
+
+
+def test_training_refuses_inferred_guides_without_explicit_opt_in(tmp_path):
+    import json
+    import pandas as pd
+    from hbv_sirna.train import train_model
+
+    path = tmp_path / "proxy.csv"
+    pd.DataFrame([{
+        "sample_id": "proxy", "sirna": "A" * 19,
+        "target_sequences": json.dumps(["T" * 19]),
+        "genotype_ids": json.dumps(["D"]), "hbv_features": "[]",
+        "label": 0.5, "_guide_inferred": True,
+    }]).to_csv(path, index=False)
+    with pytest.raises(ValueError, match="inferred"):
+        train_model(str(path), str(tmp_path / "out"))
 
 
 def test_random_split_does_not_group():
@@ -188,3 +257,31 @@ def test_random_split_does_not_group():
     train_idx, valid_idx = _split_indices(ds, seed=42, split_by="random", val_ratio=0.2)
     assert len(train_idx) == 16
     assert len(valid_idx) == 4
+
+
+def test_group_kfold_has_disjoint_groups_and_covers_every_record():
+    class _S:
+        def __init__(self, index):
+            self.sample_id = f"sample{index}"
+            self.sirna = "A" * 19 if index < 2 else "C" * 19 if index < 4 else "G" * 19
+            bundles = [
+                ["A" * 19, "C" * 19, "G" * 19],
+                ["A" * 18 + "C", "C" * 18 + "G", "G" * 18 + "T"],
+                ["C" * 19, "G" * 19, "T" * 19],
+            ]
+            self.target_sequences = bundles[index // 2]
+            self.genotype_ids = ["A", "D", "B"]
+
+    class _DS:
+        samples = [_S(i) for i in range(6)]
+
+        def __len__(self):
+            return len(self.samples)
+
+    ds = _DS()
+    folds = _group_kfold_indices(ds, n_splits=3, seed=4)
+    validation_records = []
+    for train, valid in folds:
+        assert not set(train) & set(valid)
+        validation_records.extend(valid)
+    assert sorted(validation_records) == list(range(6))
