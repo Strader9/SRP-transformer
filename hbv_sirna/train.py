@@ -70,9 +70,12 @@ def train_model(
     epochs: int = 50,
     batch_size: int = 32,
     learning_rate: float = 1e-4,
+    weight_decay: float = 1e-4,
     seed: int = 42,
     split_by: str = "locus",
     device: str | None = None,
+    genotype_dropout: float = 0.0,
+    consistency_weight: float = 0.0,
 ) -> dict[str, float]:
     set_seed(seed)
     dataset = HBVMultiGenotypeDataset(data_csv)
@@ -85,7 +88,7 @@ def train_model(
     valid_loader = DataLoader(Subset(dataset, valid_idx), batch_size=batch_size)
     target_device = torch.device(device or ("cuda" if torch.cuda.is_available() else "cpu"))
     model = HBVMultiGenotypeModel(hbv_feature_dim=dataset.feature_dim).to(target_device)
-    optimizer = torch.optim.AdamW(model.parameters(), lr=learning_rate, weight_decay=1e-4)
+    optimizer = torch.optim.AdamW(model.parameters(), lr=learning_rate, weight_decay=weight_decay)
     criterion = nn.MSELoss()
     out = Path(output_dir)
     out.mkdir(parents=True, exist_ok=True)
@@ -96,8 +99,21 @@ def train_model(
         train_losses = []
         for batch in train_loader:
             optimizer.zero_grad()
-            prediction = model(**{key: value.to(target_device) for key, value in batch.items() if key not in {"sample_id", "label"}})
+            inputs = {key: value.to(target_device) for key, value in batch.items() if key not in {"sample_id", "label"}}
+            prediction = model(**inputs)
             loss = criterion(prediction, batch["label"].to(target_device))
+            if consistency_weight > 0 and genotype_dropout > 0:
+                drop_inputs = dict(inputs)
+                mask = drop_inputs["genotype_mask"]
+                keep = torch.rand(mask.shape, device=mask.device) > genotype_dropout
+                drop_mask = mask & keep
+                row_any = drop_mask.any(dim=-1, keepdim=True)
+                drop_mask = drop_mask | ((~row_any) & mask)
+                drop_inputs["genotype_mask"] = drop_mask
+                with torch.no_grad():
+                    target_repr = prediction
+                drop_prediction = model(**drop_inputs)
+                loss = loss + consistency_weight * criterion(drop_prediction, target_repr.detach())
             loss.backward()
             optimizer.step()
             train_losses.append(loss.item())
