@@ -62,8 +62,10 @@ def train_loop(dataset, train_idx, valid_idx, model, device, batch_size, lr, wd,
         mse = float(np.mean(losses))
         if mse < best:
             best = mse
+            ckpt_dir = OUT / f"ckpt_p3_{tag}"
+            ckpt_dir.mkdir(parents=True, exist_ok=True)
             torch.save({"state_dict": model.state_dict(), "feature_dim": dataset.feature_dim},
-                       OUT / f"ckpt_p3_{tag}" / "best.pt")
+                       ckpt_dir / "best.pt")
     return best
 
 
